@@ -1,55 +1,65 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 /**
- * factorize - factorization of number into p and q.
- * @n: number n into p and q.
- * Return: return success or failure.
+ * factorize - factorizing a number.
+ * @num: number to factorize
+ *
+ * Return: Return succes or failure.
  */
-void factorize(int n)
+void factorize(int num)
 {
-	int p = 2;
-	
-	while (p < n)
+	printf("%d=", num);
+	int divisor = 2;
+	while (num > 1)
 	{
-		if (n % p == 0)
+		if (num % divisor == 0)
 		{
-			int q = n / p;
-			printf("%d=%d*%d\n", n, p, q);
-			return;
+			printf("%d", divisor);
+			num /= divisor;
+			if (num > 1)
+			{
+				printf("*");
+			}
 		}
-		p++;
+		else
+		{
+			divisor++;
+		}
 	}
+	printf("\n");
 }
 
 /**
- * main - main function
- * @argc: argument count.
- * @argv: argument vector
- * Return: return success or failure
+ * main - main argument.
+ * argc: argument count.
+ * argv: argument vector.
+ * Return: return success or failure.
  */
 int main(int argc, char *argv[])
 {
-	FILE *file = fopen(argv[1], "r");
 	int num;
-	fclose(file);
 
 	if (argc != 2)
 	{
-		fprintf(stderr, "Usage: %s <file>\n", argv[0]);
+		printf("Usage: %s <file>\n", argv[0]);
 		return (1);
 	}
 
+	FILE *file = fopen(argv[1], "r");
 	if (file == NULL)
 	{
 		perror("Error opening file");
 		return (1);
 	}
 
-	while (fscanf(file, "%d\n", &num) == 1)
+	while (fscanf(file, "%d", &num) != EOF)
 	{
-		printf("Processing number: %d\n", num);
 		factorize(num);
 	}
+
+	fclose(file);
+
 	return (0);
 }
